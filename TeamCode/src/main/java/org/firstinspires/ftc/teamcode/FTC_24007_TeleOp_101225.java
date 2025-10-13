@@ -34,7 +34,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
@@ -47,25 +46,12 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-/*
- * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
- * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
- * of the FTC Driver Station. When a selection is made from the menu, the corresponding OpMode
- * class is instantiated on the Robot Controller and executed.
- *
- * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
- * It includes all the skeletal structure that all linear OpModes contain.
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
- */
-
 @TeleOp(name="TeleOpMode")
 
 public class FTC_24007_TeleOp_101225 extends LinearOpMode {
+    // Declare OpMode members.
     final double DESIRED_DISTANCE = 14; //  this is how close the camera should get to the target (inches)
 
-    // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
 
     private static final int DESIRED_TAG_ID = -1;     // Choose the tag you want to approach or set to -1 for ANY tag.
@@ -94,7 +80,11 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
         double  drive           = 0;        // Desired forward power/speed (-1 to +1)
         double  strafe          = 0;        // Desired strafe power/speed (-1 to +1)
         double  turn            = 0;
+
         setManualExposure(6, 250);  // Use low exposure time to reduce motion blur
+
+        // Initialize the Apriltag Detection process
+        initAprilTag();
 
         // Wait for the game to start (driver presses START)
         waitForStart();
@@ -107,10 +97,10 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
                 speed = Mecanum.SPEED.FAST;
             } else if (gamepad1.left_bumper) {
                 speed = Mecanum.SPEED.SLOW;
-            }
-            else {
+            } else {
                 speed = Mecanum.SPEED.NORMAL;
             }
+
             targetFound = false;
             desiredTag  = null;
 
@@ -145,7 +135,9 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
             } else {
                 telemetry.addData("\n>","Drive using joysticks to find valid target\n");
             }
+
 //            mecanum.driveMecanum( -gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, speed );
+
             if (gamepad1.a && targetFound) {
 
                 // Determine heading, range and Yaw (tag image rotation) error so we can use them to control the robot automatically.
@@ -159,6 +151,7 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
                 strafe = Range.clip(-yawError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
 
                 telemetry.addData("Auto","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
+
             } else {
 
                 // drive using manual POV Joystick mode.  Slow things down to make the robot more controlable.
@@ -167,24 +160,27 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
                 turn   = gamepad1.right_stick_x / 3.0;  // Reduce turn rate to 33%.
                 telemetry.addData("Manual","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
             }
-           mecanum.driveMecanum(drive, strafe, turn, speed);
-           if (gamepad1.xWasPressed()) {
-               shooter.shootNear();
-           }
-           if (gamepad1.yWasPressed()) {
-               shooter.shooterStop();
-           }
-           if (gamepad1.bWasPressed()) {
-               shooter.shootMed();
-           }
-           if (gamepad1.dpadUpWasPressed()){
-               shooter.increaseVelocity();
-           }
-           if (gamepad1.dpadDownWasPressed()){
-               shooter.decreaseVelocity();
-           }
+
+            mecanum.driveMecanum(drive, strafe, turn, speed);
+
+            if (gamepad1.xWasPressed()) {
+                shooter.shootNear();
+            }
+            if (gamepad1.yWasPressed()) {
+                shooter.shooterStop();
+            }
+            if (gamepad1.bWasPressed()) {
+                shooter.shootMed();
+            }
+            if (gamepad1.dpadUpWasPressed()){
+                shooter.increaseVelocity();
+            }
+            if (gamepad1.dpadDownWasPressed()){
+                shooter.decreaseVelocity();
+            }
+
             // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            // telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Game Pad 1", "Left stick y:" + gamepad1.left_stick_y);
             telemetry.addData("Game Pad 1", "Left stick x:" + gamepad1.left_stick_x);
             telemetry.addData("Game Pad 1", "Right stick x:" + gamepad1.right_stick_x);
