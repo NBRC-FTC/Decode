@@ -136,7 +136,7 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
                 telemetry.addData("\n>","Drive using joysticks to find valid target\n");
             }
 
-//            mecanum.driveMecanum( -gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, speed );
+            //mecanum.driveMecanum( -gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, speed );
 
             if (gamepad1.a && targetFound) {
 
