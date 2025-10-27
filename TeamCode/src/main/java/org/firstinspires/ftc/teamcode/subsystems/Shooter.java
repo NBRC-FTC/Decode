@@ -11,8 +11,8 @@ public class Shooter {
     private Telemetry telemetry;
     private double targetShooterVelocity = 0;
     public Shooter(HardwareMap hardwareMapInit, Telemetry telemetry) {
-        leftShooterMotor = hardwareMapInit.get(DcMotorEx.class, "motor0");
-        rightShooterMotor = hardwareMapInit.get(DcMotorEx.class, "motor1");
+        leftShooterMotor = hardwareMapInit.get(DcMotorEx.class, "shooterLeft");
+        rightShooterMotor = hardwareMapInit.get(DcMotorEx.class, "shooterRight");
         leftShooterMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         leftShooterMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         rightShooterMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);

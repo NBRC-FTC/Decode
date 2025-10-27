@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
+import org.firstinspires.ftc.teamcode.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.Mecanum;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -50,7 +51,7 @@ import java.util.concurrent.TimeUnit;
 
 public class FTC_24007_TeleOp_101225 extends LinearOpMode {
     // Declare OpMode members.
-    final double DESIRED_DISTANCE = 14; //  this is how close the camera should get to the target (inches)
+    private double DESIRED_DISTANCE = 14; //  this is how close the camera should get to the target (inches)
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -72,6 +73,7 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
+        Launcher launcher = new Launcher(hardwareMap, telemetry);
         Shooter shooter = new Shooter(hardwareMap, telemetry);
         Mecanum mecanum = new Mecanum(hardwareMap);
         Mecanum.SPEED speed;
@@ -165,12 +167,14 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
 
             if (gamepad1.xWasPressed()) {
                 shooter.shootNear();
+                DESIRED_DISTANCE = 14;
             }
             if (gamepad1.yWasPressed()) {
                 shooter.shooterStop();
             }
             if (gamepad1.bWasPressed()) {
                 shooter.shootMed();
+                DESIRED_DISTANCE = 30;
             }
             if (gamepad1.dpadUpWasPressed()){
                 shooter.increaseVelocity();
@@ -178,13 +182,19 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
             if (gamepad1.dpadDownWasPressed()){
                 shooter.decreaseVelocity();
             }
-
+            if (gamepad1.leftStickButtonWasPressed() && targetFound) {
+                launcher.shooterUp();
+            }
+            if (gamepad1.leftBumperWasReleased()){
+                launcher.shooterDown();
+            }
             // Show the elapsed game time and wheel power.
             // telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Game Pad 1", "Left stick y:" + gamepad1.left_stick_y);
             telemetry.addData("Game Pad 1", "Left stick x:" + gamepad1.left_stick_x);
             telemetry.addData("Game Pad 1", "Right stick x:" + gamepad1.right_stick_x);
-            telemetry.addData("Game Pad 2", "Right stick y:" + gamepad2.right_stick_y);
+//            telemetry.addData("Game Pad 2", "Right stick y:" + gamepad2.right_stick_y);
+            telemetry.addData("Desired Distance", DESIRED_DISTANCE);
             shooter.getShooterVelocity();
             telemetry.update();
         }
