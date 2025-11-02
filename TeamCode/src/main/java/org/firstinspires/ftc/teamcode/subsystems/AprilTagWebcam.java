@@ -49,7 +49,6 @@ public class AprilTagWebcam {
     public void displayDetectionTelemetry(AprilTagDetection detectedID) {
         if (detectedID == null) {return;}
         if (detectedID.metadata != null){
-            telemetry.addData("\n>","HOLD Left-Bumper to Drive to Target\n");
             telemetry.addData("Found", "ID %d (%s)", detectedID.id, detectedID.metadata.name);
             telemetry.addData("Range",  "%5.1f inches", detectedID.ftcPose.range);
             telemetry.addData("Bearing","%3.0f degrees", detectedID.ftcPose.bearing);
