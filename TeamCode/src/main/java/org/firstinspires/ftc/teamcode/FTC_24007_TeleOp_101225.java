@@ -47,11 +47,11 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@TeleOp(name="TeleOpMode")
+@TeleOp(name="TeleOpMode", group = "a")
 
 public class FTC_24007_TeleOp_101225 extends LinearOpMode {
     // Declare OpMode members.
-    private double DESIRED_DISTANCE = 14; //  this is how close the camera should get to the target (inches)
+    private double DESIRED_DISTANCE = 26; //  this is how close the camera should get to the target (inches)
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -60,33 +60,36 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
 
-    final double SPEED_GAIN  =  0.02  ;   //  Forward Speed Control "Gain". e.g. Ramp up to 50% power at a 25 inch error.   (0.50 / 25.0)
-    final double STRAFE_GAIN =  0.015 ;   //  Strafe Speed Control "Gain".  e.g. Ramp up to 37% power at a 25 degree Yaw error.   (0.375 / 25.0)
-    final double TURN_GAIN   =  0.01  ;   //  Turn Control "Gain".  e.g. Ramp up to 25% power at a 25 degree error. (0.25 / 25.0)
+    final double SPEED_GAIN  =  0.1; //0.02  ;   //  Forward Speed Control "Gain". e.g. Ramp up to 50% power at a 25 inch error.   (0.50 / 25.0)
+    final double STRAFE_GAIN =  0.05;//0.015 ;   //  Strafe Speed Control "Gain".  e.g. Ramp up to 37% power at a 25 degree Yaw error.   (0.375 / 25.0)
+    final double TURN_GAIN   =  0.07;//0.01  ;   //  Turn Control "Gain".  e.g. Ramp up to 25% power at a 25 degree error. (0.25 / 25.0)
 
     final double MAX_AUTO_SPEED = 0.5;   //  Clip the approach speed to this max value (adjust for your robot)
     final double MAX_AUTO_STRAFE= 0.5;   //  Clip the strafing speed to this max value (adjust for your robot)
     final double MAX_AUTO_TURN  = 0.3;   //  Clip the turn speed to this max value (adjust for your robot)
+
+    private Launcher launcher;
+    private Shooter shooter;
+    private Mecanum mecanum;
 
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        Launcher launcher = new Launcher(hardwareMap, telemetry);
-        Shooter shooter = new Shooter(hardwareMap, telemetry);
-        Mecanum mecanum = new Mecanum(hardwareMap);
-        Mecanum.SPEED speed;
+        launcher = new Launcher(hardwareMap, telemetry);
+        shooter = new Shooter(hardwareMap, telemetry);
+        mecanum = new Mecanum(hardwareMap);
+        Mecanum.SPEED speed = Mecanum.SPEED.NORMAL;
 
         boolean targetFound     = false;    // Set to true when an AprilTag target is detected
         double  drive           = 0;        // Desired forward power/speed (-1 to +1)
         double  strafe          = 0;        // Desired strafe power/speed (-1 to +1)
         double  turn            = 0;
 
-        setManualExposure(6, 250);  // Use low exposure time to reduce motion blur
-
         // Initialize the Apriltag Detection process
         initAprilTag();
+//        setManualExposure(6, 250);  // Use low exposure time to reduce motion blur
 
         // Wait for the game to start (driver presses START)
         waitForStart();
@@ -149,17 +152,17 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
 
                 // Use the speed and turn "gains" to calculate how we want the robot to move.
                 drive  = Range.clip(rangeError * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
-                turn   = Range.clip(headingError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN) ;
-                strafe = Range.clip(-yawError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
+                turn   = Range.clip(-headingError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN) ;
+                strafe = Range.clip(yawError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
 
                 telemetry.addData("Auto","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
 
             } else {
 
                 // drive using manual POV Joystick mode.  Slow things down to make the robot more controlable.
-                drive  = -gamepad1.left_stick_y  / 2.0;  // Reduce drive rate to 50%.
-                strafe = gamepad1.left_stick_x  / 2.0;  // Reduce strafe rate to 50%.
-                turn   = gamepad1.right_stick_x / 3.0;  // Reduce turn rate to 33%.
+                drive  = -gamepad1.left_stick_y ;// / 2.0;  // Reduce drive rate to 50%.
+                strafe = gamepad1.left_stick_x ;// / 2.0;  // Reduce strafe rate to 50%.
+                turn   = gamepad1.right_stick_x ;// / 3.0;  // Reduce turn rate to 33%.
                 telemetry.addData("Manual","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
             }
 
@@ -167,14 +170,14 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
 
             if (gamepad1.xWasPressed()) {
                 shooter.shootNear();
-                DESIRED_DISTANCE = 14;
+                DESIRED_DISTANCE = 26;
             }
             if (gamepad1.yWasPressed()) {
                 shooter.shooterStop();
             }
             if (gamepad1.bWasPressed()) {
                 shooter.shootMed();
-                DESIRED_DISTANCE = 30;
+                DESIRED_DISTANCE = 46;
             }
             if (gamepad1.dpadUpWasPressed()){
                 shooter.increaseVelocity();
@@ -182,7 +185,7 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
             if (gamepad1.dpadDownWasPressed()){
                 shooter.decreaseVelocity();
             }
-            if (gamepad1.leftStickButtonWasPressed() && targetFound) {
+            if (gamepad1.leftStickButtonWasPressed()) {
                 launcher.shooterUp();
             }
             if (gamepad1.leftBumperWasReleased()){
@@ -195,7 +198,9 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
             telemetry.addData("Game Pad 1", "Right stick x:" + gamepad1.right_stick_x);
 //            telemetry.addData("Game Pad 2", "Right stick y:" + gamepad2.right_stick_y);
             telemetry.addData("Desired Distance", DESIRED_DISTANCE);
-            shooter.getShooterVelocity();
+            if (shooter != null) {
+                shooter.getShooterVelocity();
+            }
             telemetry.update();
         }
     }
