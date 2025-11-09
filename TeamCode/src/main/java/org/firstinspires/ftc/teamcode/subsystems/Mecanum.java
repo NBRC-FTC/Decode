@@ -1,7 +1,11 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class Mecanum {
     HardwareMap hardwareMap;
@@ -27,6 +31,8 @@ public class Mecanum {
         NORMAL,
         FAST
     }
+    // This declares the IMU needed to get the current direction the robot is facing
+    IMU imu;
 
     public Mecanum(HardwareMap hardwareMap) {
 
@@ -49,7 +55,17 @@ public class Mecanum {
 
         // Mecanum drive is controlled with three axes: drive (front-and-back),
         // strafe (left-and-right), and twist (rotating the whole chassis).
-        ;
+        imu = hardwareMap.get(IMU.class, "imu");
+        // This needs to be changed to match the orientation on your robot
+        RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
+                RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
+        RevHubOrientationOnRobot.UsbFacingDirection usbDirection =
+                RevHubOrientationOnRobot.UsbFacingDirection.DOWN;
+
+        RevHubOrientationOnRobot orientationOnRobot = new
+                RevHubOrientationOnRobot(logoDirection, usbDirection);
+        imu.initialize(new IMU.Parameters(orientationOnRobot));
+
     }
 
     public void driveMecanum(double drive, double strafe, double twist, SPEED speed) {
@@ -94,6 +110,28 @@ public class Mecanum {
         rightFrontMotor.setPower(rightFrontPower);
         leftRearMotor.setPower(leftBackPower);
         rightRearMotor.setPower(rightBackPower);
+    }
+
+    // This routine drives the robot field relative
+    public void driveFieldRelative(double forward, double right, double rotate, SPEED speed) {
+        // First, convert direction being asked to drive to polar coordinates
+        double theta = Math.atan2(forward, right);
+        double r = Math.hypot(right, forward);
+
+        // Second, rotate angle by the angle the robot is pointing
+        theta = AngleUnit.normalizeRadians(theta -
+                imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
+
+        // Third, convert back to cartesian
+        double newForward = r * Math.sin(theta);
+        double newRight = r * Math.cos(theta);
+
+        // Finally, call the drive method with robot relative forward and right amounts
+        driveMecanum(newForward, newRight, rotate, speed);
+    }
+
+    public void resetImu(){
+        imu.resetYaw();
     }
 
     public void moveForward(int howMuch, double speed) {

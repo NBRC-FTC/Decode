@@ -67,7 +67,7 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
     final double MAX_AUTO_SPEED = 0.5;   //  Clip the approach speed to this max value (adjust for your robot)
     final double MAX_AUTO_STRAFE= 0.5;   //  Clip the strafing speed to this max value (adjust for your robot)
     final double MAX_AUTO_TURN  = 0.3;   //  Clip the turn speed to this max value (adjust for your robot)
-
+    
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -83,10 +83,11 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
         double  strafe          = 0;        // Desired strafe power/speed (-1 to +1)
         double  turn            = 0;
 
-        setManualExposure(6, 250);  // Use low exposure time to reduce motion blur
-
         // Initialize the Apriltag Detection process
         initAprilTag();
+
+        // Use low exposure time to reduce motion blur
+        setManualExposure(6, 250);
 
         // Wait for the game to start (driver presses START)
         waitForStart();
@@ -153,6 +154,7 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
                 strafe = Range.clip(-yawError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
 
                 telemetry.addData("Auto","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
+                mecanum.driveMecanum(drive, strafe, turn, speed);
 
             } else {
 
@@ -161,9 +163,10 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
                 strafe = gamepad1.left_stick_x  / 2.0;  // Reduce strafe rate to 50%.
                 turn   = gamepad1.right_stick_x / 3.0;  // Reduce turn rate to 33%.
                 telemetry.addData("Manual","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
+                mecanum.driveFieldRelative(drive, strafe, turn, speed);
+
             }
 
-            mecanum.driveMecanum(drive, strafe, turn, speed);
 
             if (gamepad1.xWasPressed()) {
                 shooter.shootNear();
@@ -187,6 +190,9 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
             }
             if (gamepad1.leftBumperWasReleased()){
                 launcher.shooterDown();
+            }
+            if (gamepad1.ps){
+                mecanum.resetImu();
             }
             // Show the elapsed game time and wheel power.
             // telemetry.addData("Status", "Run Time: " + runtime.toString());
