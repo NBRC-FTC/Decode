@@ -16,4 +16,11 @@ public class Launcher {
     public void shooterDown() {
         launcher.setPosition(0);
     }
+    public void shoot() {
+        if (launcher.getPosition() == 0) {
+            launcher.setPosition(1);
+        } else if (launcher.getPosition() == 1) {
+            launcher.setPosition(0);
+        }
+    }
 }

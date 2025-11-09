@@ -186,10 +186,7 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
                 shooter.decreaseVelocity();
             }
             if (gamepad1.leftStickButtonWasPressed()) {
-                launcher.shooterUp();
-            }
-            if (gamepad1.leftBumperWasReleased()){
-                launcher.shooterDown();
+                launcher.shoot();
             }
             // Show the elapsed game time and wheel power.
             // telemetry.addData("Status", "Run Time: " + runtime.toString());

@@ -33,10 +33,10 @@ public class Shooter {
     }
     public void shootNear(){
         targetShooterVelocity = 760;
-        setShooterVelocity(targetShooterVelocity); //14 inch
+        setShooterVelocity(targetShooterVelocity); //26 inch
     }
     public void shootMed(){
-        targetShooterVelocity = 1000; //30 inch
+        targetShooterVelocity = 1000; //46 inch
         setShooterVelocity(targetShooterVelocity);
     }
     public void increaseVelocity(){
