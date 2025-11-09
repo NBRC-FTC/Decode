@@ -60,22 +60,26 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
 
-    final double SPEED_GAIN  =  0.02  ;   //  Forward Speed Control "Gain". e.g. Ramp up to 50% power at a 25 inch error.   (0.50 / 25.0)
-    final double STRAFE_GAIN =  0.015 ;   //  Strafe Speed Control "Gain".  e.g. Ramp up to 37% power at a 25 degree Yaw error.   (0.375 / 25.0)
-    final double TURN_GAIN   =  0.01  ;   //  Turn Control "Gain".  e.g. Ramp up to 25% power at a 25 degree error. (0.25 / 25.0)
+    final double SPEED_GAIN  =  0.1; //0.02  ;   //  Forward Speed Control "Gain". e.g. Ramp up to 50% power at a 25 inch error.   (0.50 / 25.0)
+    final double STRAFE_GAIN =  0.05;//0.015 ;   //  Strafe Speed Control "Gain".  e.g. Ramp up to 37% power at a 25 degree Yaw error.   (0.375 / 25.0)
+    final double TURN_GAIN   =  0.07;//0.01  ;   //  Turn Control "Gain".  e.g. Ramp up to 25% power at a 25 degree error. (0.25 / 25.0)
 
     final double MAX_AUTO_SPEED = 0.5;   //  Clip the approach speed to this max value (adjust for your robot)
     final double MAX_AUTO_STRAFE= 0.5;   //  Clip the strafing speed to this max value (adjust for your robot)
     final double MAX_AUTO_TURN  = 0.3;   //  Clip the turn speed to this max value (adjust for your robot)
+
+    private Launcher launcher;
+    private Shooter shooter;
+    private Mecanum mecanum;
 
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        Launcher launcher = new Launcher(hardwareMap, telemetry);
-        Shooter shooter = new Shooter(hardwareMap, telemetry);
-        Mecanum mecanum = new Mecanum(hardwareMap);
+        launcher = new Launcher(hardwareMap, telemetry);
+        shooter = new Shooter(hardwareMap, telemetry);
+        mecanum = new Mecanum(hardwareMap);
         Mecanum.SPEED speed;
 
         boolean targetFound     = false;    // Set to true when an AprilTag target is detected
@@ -153,28 +157,32 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
                 strafe = Range.clip(-yawError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
 
                 telemetry.addData("Auto","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
+                mecanum.driveMecanum(drive, strafe, turn, speed);
 
             } else {
 
                 // drive using manual POV Joystick mode.  Slow things down to make the robot more controlable.
-                drive  = -gamepad1.left_stick_y  / 2.0;  // Reduce drive rate to 50%.
-                strafe = gamepad1.left_stick_x  / 2.0;  // Reduce strafe rate to 50%.
-                turn   = gamepad1.right_stick_x / 3.0;  // Reduce turn rate to 33%.
+                drive  = -gamepad1.left_stick_y;  // 2.0;  // Reduce drive rate to 50%.
+                strafe = gamepad1.left_stick_x ; // 2.0;  // Reduce strafe rate to 50%.
+                turn   = gamepad1.right_stick_x; // 3.0;  // Reduce turn rate to 33%.
                 telemetry.addData("Manual","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
+                mecanum.driveFieldRelative(drive, strafe, turn, speed);
             }
 
-            mecanum.driveMecanum(drive, strafe, turn, speed);
 
+            if (gamepad1.psWasPressed()) {
+                mecanum.resetImu();
+            }
             if (gamepad1.xWasPressed()) {
                 shooter.shootNear();
-                DESIRED_DISTANCE = 14;
+                DESIRED_DISTANCE = 26;
             }
             if (gamepad1.yWasPressed()) {
                 shooter.shooterStop();
             }
             if (gamepad1.bWasPressed()) {
                 shooter.shootMed();
-                DESIRED_DISTANCE = 30;
+                DESIRED_DISTANCE = 46;
             }
             if (gamepad1.dpadUpWasPressed()){
                 shooter.increaseVelocity();
@@ -182,11 +190,8 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
             if (gamepad1.dpadDownWasPressed()){
                 shooter.decreaseVelocity();
             }
-            if (gamepad1.leftStickButtonWasPressed() && targetFound) {
-                launcher.shooterUp();
-            }
-            if (gamepad1.leftBumperWasReleased()){
-                launcher.shooterDown();
+            if (gamepad1.leftStickButtonWasPressed()) {
+                launcher.shoot();
             }
             // Show the elapsed game time and wheel power.
             // telemetry.addData("Status", "Run Time: " + runtime.toString());

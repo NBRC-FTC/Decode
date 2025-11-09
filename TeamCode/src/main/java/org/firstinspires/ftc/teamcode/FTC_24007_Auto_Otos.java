@@ -14,6 +14,8 @@ import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 @Autonomous(name="AutoMode_Otos",preselectTeleOp = "TeleOpMode")  // @TeleOp(...) is the other common choice
 // @Disabled
 public class FTC_24007_Auto_Otos extends LinearOpMode {
+
+
     private Launcher launcher;
     private Shooter shooter;
     private Mecanum mecanum;
@@ -62,20 +64,20 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
         switch (startPosition) {
             case GOAL_LAUNCH:
                 SparkFunOTOS.Pose2D currentPosition = new SparkFunOTOS.Pose2D(.0, 0, 0); // should be -3.75 & -7.5 and 90
-                otosDrive.setPosition(currentPosition);
+                //otosDrive.setPosition(currentPosition);
                 telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
                 telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
                 telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
                 telemetry.update();
 //                sleep(5000);
-                otosDrive.otosDrive(-26, 0, 0, 10);
+                otosDrive.otosDrive(0, 26, 0, 10);
                 telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
                 telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
                 telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
                 telemetry.update();
                 sleep(500);
                 shooter.shootNear();
-                sleep(1000);
+                sleep(2000);
                 launcher.shooterUp();
                 break;
 
