@@ -16,25 +16,27 @@ public class Shooter {
         leftShooterMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         leftShooterMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         rightShooterMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        this.telemetry = telemetry;
+
     }
     public void setShooterVelocity(double velocity){
         leftShooterMotor.setVelocity(velocity);
         rightShooterMotor.setVelocity(velocity);
     }
     public void getShooterVelocity(){
-        telemetry.addData("leftShooterVelocity", "%.3f", leftShooterMotor.getVelocity());
-        telemetry.addData("rightShooterVelocity", "%.3f", rightShooterMotor.getVelocity());
+        telemetry.addData("leftShooterVelocity", leftShooterMotor.getVelocity());
+        telemetry.addData("rightShooterVelocity", rightShooterMotor.getVelocity());
     }
     public void shooterStop (){
         leftShooterMotor.setVelocity(0);
         rightShooterMotor.setVelocity(0);
     }
     public void shootNear(){
-        targetShooterVelocity = 800;
-        setShooterVelocity(targetShooterVelocity); //14 inch
+        targetShooterVelocity = 760;
+        setShooterVelocity(targetShooterVelocity); //26 inch
     }
     public void shootMed(){
-        targetShooterVelocity = 1000; //30 inch
+        targetShooterVelocity = 1000; //46 inch
         setShooterVelocity(targetShooterVelocity);
     }
     public void increaseVelocity(){

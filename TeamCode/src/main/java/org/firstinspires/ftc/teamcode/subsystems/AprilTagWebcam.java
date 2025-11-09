@@ -20,7 +20,7 @@ public class AprilTagWebcam {
     private List<AprilTagDetection> detectedTags = new ArrayList<>();
     private Telemetry telemetry;
 
-    public AprilTagWebcam(HardwareMap hwmap, Telemetry telemetry) {
+    public void init(HardwareMap hwmap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
         aprilTagProcessor = new AprilTagProcessor.Builder()
