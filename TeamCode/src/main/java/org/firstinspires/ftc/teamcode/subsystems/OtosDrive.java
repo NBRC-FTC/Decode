@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
@@ -22,7 +25,7 @@ public class OtosDrive {
     final double MAX_AUTO_TURN  = 1;   //  Clip the turn speed to this max value (adjust for your robot)
 
     HardwareMap hardwareMap;
-
+    Telemetry telemetry;
     private DcMotor leftFrontMotor = null;
     private DcMotor rightFrontMotor = null;
     private DcMotor leftRearMotor = null;
@@ -50,9 +53,11 @@ public class OtosDrive {
     private SparkFunOTOS myOtos;        // Optical tracking odometry sensor
     SparkFunOTOS.Pose2D pos;
 
-    public OtosDrive(HardwareMap hardwareMap) {
+    public OtosDrive(HardwareMap hardwareMap, Telemetry telemetry) {
 
         this.hardwareMap = hardwareMap;
+        this.telemetry = telemetry;
+
         leftFrontMotor = hardwareMap.get(DcMotor.class, "front_left");
         rightFrontMotor = hardwareMap.get(DcMotor.class, "front_right");
         leftRearMotor = hardwareMap.get(DcMotor.class, "back_left");
@@ -68,6 +73,7 @@ public class OtosDrive {
         rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftRearMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightRearMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -197,7 +203,7 @@ public class OtosDrive {
             drive  = Range.clip(rotY * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
             strafe = Range.clip(rotX * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
             turn   = Range.clip(yawError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN) ;
-/*
+
             telemetry.addData("Auto","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
             // current x,y swapped due to 90 degree rotation
             telemetry.addData("current X coordinate", currentPos.x);
@@ -210,7 +216,7 @@ public class OtosDrive {
             telemetry.addData("yError", yError);
             telemetry.addData("yawError", yawError);
             telemetry.update();
-*/
+
             // Apply desired axes motions to the drivetrain.
             moveRobot(drive, strafe, turn);
 
@@ -235,7 +241,7 @@ public class OtosDrive {
         */
     public SparkFunOTOS.Pose2D myPosition() {
         pos = myOtos.getPosition();
-        SparkFunOTOS.Pose2D myPos = new SparkFunOTOS.Pose2D(pos.x, pos.y, -pos.h);
+        SparkFunOTOS.Pose2D myPos = new SparkFunOTOS.Pose2D(-pos.x, -pos.y, -pos.h);
         return(myPos);
     }
 
@@ -245,7 +251,7 @@ public class OtosDrive {
      * Positive strafe right
      * Positive turn is clockwise: note this is not how the IMU reports yaw(heading)
      */
-    public void moveRobot(double drive, double strafe, double turn) {
+    private void moveRobot(double drive, double strafe, double turn) {
 
         // Calculate wheel powers.
         double leftFrontPower    =  drive +strafe +turn;
@@ -270,6 +276,15 @@ public class OtosDrive {
         rightFrontMotor.setPower(rightFrontPower);
         leftRearMotor.setPower(leftBackPower);
         rightRearMotor.setPower(rightBackPower);
+/*
+        telemetry.addData("drivez", drive);
+        telemetry.addData("leftFrontPower", leftFrontMotor.getPower());
+        telemetry.addData("rightFrontPower", rightFrontMotor.getPower());
+        telemetry.addData("leftBackPower", leftRearMotor.getPower());
+        telemetry.addData("rightBackPower", rightRearMotor.getPower());
+        telemetry.update();
         //sleep(10);
+
+ */
     }
 }

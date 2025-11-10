@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
 import org.firstinspires.ftc.teamcode.subsystems.Launcher;
-import org.firstinspires.ftc.teamcode.subsystems.Mecanum;
+//import org.firstinspires.ftc.teamcode.subsystems.Mecanum;
 import org.firstinspires.ftc.teamcode.subsystems.OtosDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 
@@ -18,7 +18,7 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
 
     private Launcher launcher;
     private Shooter shooter;
-    private Mecanum mecanum;
+    //private Mecanum mecanum;
     public enum START_POSITION{
         GOAL_LAUNCH,
         SMALL_LAUNCH
@@ -30,12 +30,12 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
     @Override
     public void runOpMode() {
         telemetry.setAutoClear(true);
-        OtosDrive otosDrive = new OtosDrive(hardwareMap);
+        OtosDrive otosDrive = new OtosDrive(hardwareMap, telemetry);
         otosDrive.configureOtos();
 
         launcher = new Launcher(hardwareMap, telemetry);
         shooter = new Shooter(hardwareMap, telemetry);
-        mecanum = new Mecanum(hardwareMap);
+        //mecanum = new Mecanum(hardwareMap);
 
 
         telemetry.addData("Configured OTOS", startPosition);
@@ -61,15 +61,26 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
 
         waitForStart();
 
+        telemetry.addLine("hello");
+        telemetry.update();
+        otosDrive.otosDrive(0, -36, 0, 5);
+        sleep(5000);
+        otosDrive.otosDrive(-10, -36, 0, 5);
+        sleep(20000);
+        //otosDrive.moveRobot(0, 0, 0);
+        sleep(20000);
+        //otosDrive.moveRobot(0, 0, 0);
+
+        /*
         switch (startPosition) {
             case GOAL_LAUNCH:
-                SparkFunOTOS.Pose2D currentPosition = new SparkFunOTOS.Pose2D(.0, 0, 0); // should be -3.75 & -7.5 and 90
+                //SparkFunOTOS.Pose2D currentPosition = new SparkFunOTOS.Pose2D(.0, 0, 0); // should be -3.75 & -7.5 and 90
                 //otosDrive.setPosition(currentPosition);
                 telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
                 telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
                 telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
                 telemetry.update();
-//                sleep(5000);
+                sleep(5000);
                 otosDrive.otosDrive(0, 26, 0, 10);
                 telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
                 telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
@@ -84,11 +95,12 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
             case SMALL_LAUNCH:
 
                 //otosDrive.otosDrive(10,10,90,10);
+                telemetry.addLine("hello");
                 otosDrive.moveRobot(.5, 0, 0);
                 sleep(5000);
                 break;
 
-        }
+        } */
         telemetry.addData("Path", "Complete");
         telemetry.update();
         sleep(1000);  // Pause to display last telemetry message.
@@ -114,7 +126,6 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 startPosition = START_POSITION.SMALL_LAUNCH;
                 break;
             }
-
 
             telemetry.update();
         }
