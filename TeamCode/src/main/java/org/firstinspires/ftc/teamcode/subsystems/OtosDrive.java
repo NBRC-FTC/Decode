@@ -177,7 +177,7 @@ public class OtosDrive {
      * Move robot to a designated X,Y position and heading
      * set the maxTime to have the driving logic timeout after a number of seconds.
      */
-    public void otosDrive(double targetX, double targetY, double targetHeading, int maxTime) {
+    public void driveOtos(double targetX, double targetY, double targetHeading, int maxTime) {
         double drive, strafe, turn;
         double currentRange, targetRange, initialBearing, targetBearing, xError, yError, yawError;
         double opp, adj;

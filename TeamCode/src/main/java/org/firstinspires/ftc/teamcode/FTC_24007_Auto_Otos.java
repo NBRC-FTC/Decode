@@ -63,9 +63,9 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
 
         telemetry.addLine("hello");
         telemetry.update();
-        otosDrive.otosDrive(0, -36, 0, 5);
+        otosDrive.driveOtos(0, -36, 0, 5);
         sleep(5000);
-        otosDrive.otosDrive(-10, -36, 0, 5);
+        otosDrive.driveOtos(-10, -36, 0, 5);
         sleep(20000);
         //otosDrive.moveRobot(0, 0, 0);
         sleep(20000);
