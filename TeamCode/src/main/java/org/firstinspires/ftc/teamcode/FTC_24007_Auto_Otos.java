@@ -20,9 +20,11 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
     private Shooter shooter;
     //private Mecanum mecanum;
     public enum START_POSITION{
-        GOAL_LAUNCH,
-        SMALL_LAUNCH
-
+        GOAL_LAUNCH_RED,
+        SMALL_LAUNCH_RED,
+        SMALL_LAUNCH_BLUE,
+        GOAL_LAUNCH_BLUE,
+        SMALL_PARK,
     }
 
     public static START_POSITION startPosition;
@@ -60,7 +62,7 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
 
         waitForStart();
-
+/*
         telemetry.addLine("hello");
         telemetry.update();
         otosDrive.driveOtos(0, -36, 0, 5);
@@ -70,18 +72,18 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
         //otosDrive.moveRobot(0, 0, 0);
         sleep(20000);
         //otosDrive.moveRobot(0, 0, 0);
+*/
 
-        /*
         switch (startPosition) {
-            case GOAL_LAUNCH:
+            case GOAL_LAUNCH_BLUE:
                 //SparkFunOTOS.Pose2D currentPosition = new SparkFunOTOS.Pose2D(.0, 0, 0); // should be -3.75 & -7.5 and 90
                 //otosDrive.setPosition(currentPosition);
                 telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
                 telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
                 telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
                 telemetry.update();
-                sleep(5000);
-                otosDrive.otosDrive(0, 26, 0, 10);
+//                sleep(5000);
+                otosDrive.driveOtos(0, -26, 0, 10);
                 telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
                 telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
                 telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
@@ -90,17 +92,121 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 shooter.shootNear();
                 sleep(2000);
                 launcher.shooterUp();
+                sleep(1000);
+                launcher.shooterDown();
+                sleep(500);
+                shooter.shootNear();
+                sleep(2000);
+                launcher.shooterUp();
+                sleep(1000);
+                launcher.shooterDown();
+                sleep(500);
+                shooter.shootNear();
+                sleep(2000);
+                launcher.shooterUp();
+                sleep(1000);
+                launcher.shooterDown();
+                sleep(500);
+                shooter.shootNear();
+                sleep(2000);
+                launcher.shooterUp();
+                sleep(1000);
+                otosDrive.driveOtos(-26, -26, 0, 10);
                 break;
 
-            case SMALL_LAUNCH:
-
-                //otosDrive.otosDrive(10,10,90,10);
-                telemetry.addLine("hello");
-                otosDrive.moveRobot(.5, 0, 0);
+            case SMALL_PARK:
+                otosDrive.driveOtos(0,25,0,10);
+                break;
+            case SMALL_LAUNCH_BLUE:
+                otosDrive.driveOtos(-5,50,0,10);
+                sleep(1000);
+                otosDrive.driveOtos(-16,75,-52,10);
+                shooter.shootNear();
+                sleep(2000);
+                launcher.shooterUp();
+                sleep(1000);
+                launcher.shooterDown();
+                sleep(2000);
+                launcher.shooterUp();
+                sleep(1000);
+                otosDrive.driveOtos(-16, 71, -52, 10);
+                sleep(2000);
+                launcher.shooterDown();
+                sleep(2000);
+                launcher.shooterUp();
+                sleep(1000);
+                launcher.shooterDown();
+                sleep(2000);
+                launcher.shooterUp();
+                sleep(2000);
+                otosDrive.driveOtos(-15, 35, -52, 10);
+                break;
+            case SMALL_LAUNCH_RED:
+                otosDrive.driveOtos(5,50,0,10);
+                sleep(1000);
+                otosDrive.driveOtos(16,75,52,10);
+                shooter.shootNear();
+                sleep(2000);
+                launcher.shooterUp();
+                sleep(1000);
+                launcher.shooterDown();
+                sleep(2000);
+                launcher.shooterUp();
+                sleep(1000);
+                otosDrive.driveOtos(16, 71, 52, 10);
+                sleep(2000);
+                launcher.shooterDown();
+                sleep(2000);
+                launcher.shooterUp();
+                sleep(1000);
+                launcher.shooterDown();
+                sleep(2000);
+                launcher.shooterUp();
+                sleep(2000);
+                otosDrive.driveOtos(15, 35, 52, 10);
+                break;
+            case GOAL_LAUNCH_RED:
+                //SparkFunOTOS.Pose2D currentPosition = new SparkFunOTOS.Pose2D(.0, 0, 0); // should be -3.75 & -7.5 and 90
+                //otosDrive.setPosition(currentPosition);
+                telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
+                telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
+                telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
+                telemetry.update();
                 sleep(5000);
+                otosDrive.driveOtos(0, -26, 0, 10);
+                telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
+                telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
+                telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
+                telemetry.update();
+                sleep(500);
+                shooter.shootNear();
+                sleep(2000);
+                launcher.shooterUp();
+                sleep(1000);
+                launcher.shooterDown();
+                sleep(500);
+                shooter.shootNear();
+                sleep(2000);
+                launcher.shooterUp();
+                sleep(1000);
+                launcher.shooterDown();
+                sleep(500);
+                shooter.shootNear();
+                sleep(2000);
+                launcher.shooterUp();
+                sleep(1000);
+                launcher.shooterDown();
+                sleep(500);
+                shooter.shootNear();
+                sleep(2000);
+                launcher.shooterUp();
+                sleep(1000);
+                otosDrive.driveOtos(26, -26, 0, 10);
                 break;
 
-        } */
+
+
+        }
         telemetry.addData("Path", "Complete");
         telemetry.update();
         sleep(1000);  // Pause to display last telemetry message.
@@ -115,18 +221,34 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
             //telemetry.addData("---------------------------------------","");
             //telemetry.addLine("This Auto program uses Open CV Vision Processor for Team Element detection");
             telemetry.addData("Select Starting Position using XYAB on Logitech on gamepad 1:","");
-            telemetry.addData("    Goal Launch  ", "(X)");
-            telemetry.addData("    Small Launch ", "(Y)");
+            telemetry.addData("    Goal Launch Red  ", "(X)");
+            telemetry.addData("    Small Launch_BLUE ", "(Y)");
+            telemetry.addData("    Small Launch_RED ", "(right bumper)");
+            telemetry.addData("    Goal Launch Blue  ", "(B)");
+            telemetry.addData("    Small Park ", "(A)");
+
 
             if(gamepad1.x){
-                startPosition = START_POSITION.GOAL_LAUNCH;
+                startPosition = START_POSITION.GOAL_LAUNCH_RED;
                 break;
             }
             if(gamepad1.y){
-                startPosition = START_POSITION.SMALL_LAUNCH;
+                startPosition = START_POSITION.SMALL_LAUNCH_BLUE;
                 break;
             }
+            if(gamepad1.right_bumper) {
+                startPosition = START_POSITION.SMALL_LAUNCH_RED;
+                break;
+            }
+            if(gamepad1.b){
+                startPosition = START_POSITION.GOAL_LAUNCH_BLUE;
+                break;
+            }
+            if(gamepad1.a){
+                startPosition = START_POSITION.SMALL_PARK;
 
+                break;
+            }
             telemetry.update();
         }
         telemetry.clearAll();

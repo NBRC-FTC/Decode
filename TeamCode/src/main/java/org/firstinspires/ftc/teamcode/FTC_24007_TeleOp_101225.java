@@ -51,7 +51,7 @@ import java.util.concurrent.TimeUnit;
 
 public class FTC_24007_TeleOp_101225 extends LinearOpMode {
     // Declare OpMode members.
-    private double DESIRED_DISTANCE = 14; //  this is how close the camera should get to the target (inches)
+    private double DESIRED_DISTANCE = 26; //  this is how close the camera should get to the target (inches)
 
     private ElapsedTime runtime = new ElapsedTime();
 
