@@ -83,7 +83,7 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
                 telemetry.update();
 //                sleep(5000);
-                otosDrive.driveOtos(0, -26, 0, 10);
+                otosDrive.driveOtos(0, -22, 0, 10);
                 telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
                 telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
                 telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
@@ -111,7 +111,7 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 sleep(2000);
                 launcher.shooterUp();
                 sleep(1000);
-                otosDrive.driveOtos(-26, -26, 0, 10);
+                otosDrive.driveOtos(-26, -22, 0, 10);
                 break;
 
             case SMALL_PARK:
@@ -173,7 +173,7 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
                 telemetry.update();
                 sleep(5000);
-                otosDrive.driveOtos(0, -26, 0, 10);
+                otosDrive.driveOtos(0, -22, 0, 10);
                 telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
                 telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
                 telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
@@ -201,7 +201,7 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 sleep(2000);
                 launcher.shooterUp();
                 sleep(1000);
-                otosDrive.driveOtos(26, -26, 0, 10);
+                otosDrive.driveOtos(26, -22, 0, 10);
                 break;
 
 
