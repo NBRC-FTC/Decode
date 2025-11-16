@@ -50,8 +50,15 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
         telemetry.addData("Selected Starting Position", startPosition);
         telemetry.update();
 
+        int delay = 0;
+        delay = setStartDelay();
+
+        telemetry.addData("Selected Starting delay", delay);
+        telemetry.update();
+
         while (opModeInInit()) {
             telemetry.addData("Selected Starting Position", startPosition);
+            telemetry.addData("Selected Starting delay", delay);
             // Display current robot position/heading
             telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
             telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
@@ -82,7 +89,7 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
                 telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
                 telemetry.update();
-//                sleep(5000);
+                sleep(delay);
                 otosDrive.driveOtos(0, -22, 0, 10);
                 telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
                 telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
@@ -115,9 +122,11 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 break;
 
             case SMALL_PARK:
+               sleep(delay);
                 otosDrive.driveOtos(0,25,0,10);
                 break;
             case SMALL_LAUNCH_BLUE:
+               sleep(delay);
                 otosDrive.driveOtos(-5,50,0,10);
                 sleep(1000);
                 otosDrive.driveOtos(-16,75,-52,10);
@@ -142,6 +151,7 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 otosDrive.driveOtos(-15, 35, -52, 10);
                 break;
             case SMALL_LAUNCH_RED:
+               sleep(delay);
                 otosDrive.driveOtos(5,50,0,10);
                 sleep(1000);
                 otosDrive.driveOtos(16,75,52,10);
@@ -172,7 +182,7 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
                 telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
                 telemetry.update();
-                sleep(5000);
+                sleep(delay);
                 otosDrive.driveOtos(0, -22, 0, 10);
                 telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
                 telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
@@ -253,6 +263,43 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
         }
         telemetry.clearAll();
     }
+
+    public int setStartDelay() {
+        telemetry.setAutoClear(true);
+        telemetry.clearAll();
+        int delay = 0;
+
+        //******select start pose*****
+        while(!isStopRequested()){
+            //telemetry.addData("Initializing FTC Wires (ftcwires.org) Autonomous adopted for Team:",
+            //       TEAM_NAME, " ", TEAM_NUMBER);
+            //telemetry.addData("---------------------------------------","");
+            //telemetry.addLine("This Auto program uses Open CV Vision Processor for Team Element detection");
+            telemetry.addData("Select Starting Delay ","");
+            telemetry.addData("    Increase starting delay Park ", "(dpad up)");
+            telemetry.addData("    Deacrease starting delay ", "(dpad down)");
+            telemetry.addData("delay", delay);
+            telemetry.addData("   Lock in set delay ", "(right stick button)");
+
+            if(gamepad1.dpadUpWasPressed()){
+                delay = delay + 1000;
+            }
+            if(gamepad1.dpadDownWasPressed()){
+                delay = delay - 1000;
+                if (delay< 0){
+                    delay = 0;
+                }
+            }
+            if(gamepad1.right_stick_button) {
+                break;
+            }
+
+            telemetry.update();
+        }
+        telemetry.clearAll();
+            return delay;
+    }
+
     public void displayPosition(OtosDrive otosDrive) {
         telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
         telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
