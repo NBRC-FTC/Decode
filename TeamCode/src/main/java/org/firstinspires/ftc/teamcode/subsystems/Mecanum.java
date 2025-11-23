@@ -133,6 +133,9 @@ public class Mecanum {
     public void resetImu(){
         imu.resetYaw();
     }
+    public double getImuAngle() {
+        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+    }
 
     public void moveForward(int howMuch, double speed) {
         // howMuch is in inches. A negative howMuch moves backward.

@@ -208,6 +208,7 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
             telemetry.addData("Game Pad 1", "Right stick x:" + gamepad1.right_stick_x);
 //            telemetry.addData("Game Pad 2", "Right stick y:" + gamepad2.right_stick_y);
             telemetry.addData("Desired Distance", DESIRED_DISTANCE);
+            telemetry.addData("Yaw", mecanum.getImuAngle());
             shooter.getShooterVelocity();
             telemetry.update();
         }
