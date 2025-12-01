@@ -37,6 +37,10 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.Mecanum;
@@ -87,11 +91,10 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
         double  strafe          = 0;        // Desired strafe power/speed (-1 to +1)
         double  turn            = 0;
 
-        setManualExposure(6, 250);  // Use low exposure time to reduce motion blur
 
         // Initialize the Apriltag Detection process
         initAprilTag();
-
+        setManualExposure(6, 250);  // Use low exposure time to reduce motion blur
         // Wait for the game to start (driver presses START)
         waitForStart();
         runtime.reset();
@@ -183,14 +186,14 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
             }
             if (gamepad1.xWasPressed()) {
                 shooter.shootNear();
-                DESIRED_DISTANCE = 26;
+                DESIRED_DISTANCE = 37;
             }
             if (gamepad1.yWasPressed()) {
                 shooter.shooterStop();
             }
             if (gamepad1.bWasPressed()) {
                 shooter.shootMed();
-                DESIRED_DISTANCE = 46;
+                DESIRED_DISTANCE = 65;
             }
             if (gamepad1.dpadUpWasPressed()){
                 shooter.increaseVelocity();
@@ -220,7 +223,6 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
     private void initAprilTag() {
         // Create the AprilTag processor by using a builder.
         aprilTag = new AprilTagProcessor.Builder().build();
-
         // Adjust Image Decimation to trade-off detection-range for detection-rate.
         // e.g. Some typical detection data using a Logitech C920 WebCam
         // Decimation = 1 ..  Detect 2" Tag from 10 feet away at 10 Frames per second
@@ -235,6 +237,7 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .addProcessor(aprilTag)
                 .build();
+
     }
 
     /*

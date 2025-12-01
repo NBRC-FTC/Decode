@@ -29,6 +29,7 @@ public class AprilTagWebcam {
                 .setDrawAxes(true)
                 .setDrawCubeProjection(true)
                 .setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES)
+//                .setCameraPose()
                 .build();
 
         // Adjust Image Decimation to trade-off detection-range for detection-rate.
