@@ -230,12 +230,12 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
             //       TEAM_NAME, " ", TEAM_NUMBER);
             //telemetry.addData("---------------------------------------","");
             //telemetry.addLine("This Auto program uses Open CV Vision Processor for Team Element detection");
-            telemetry.addData("Select Starting Position using XYAB on Logitech on gamepad 1:","");
-            telemetry.addData("    Goal Launch Red  ", "(X)");
-            telemetry.addData("    Small Launch_BLUE ", "(Y)");
-            telemetry.addData("    Small Launch_RED ", "(right bumper)");
-            telemetry.addData("    Goal Launch Blue  ", "(B)");
-            telemetry.addData("    Small Park ", "(A)");
+            telemetry.addData("Select Starting Position:","");
+            telemetry.addData("    Goal Launch Red  ", "(X / Square)");
+            telemetry.addData("    Small Launch_BLUE ", "(Y / Triangle)");
+            telemetry.addData("    Small Launch_RED ", "(Right Bumper)");
+            telemetry.addData("    Goal Launch Blue  ", "(B / Circle)");
+            telemetry.addData("    Small Park ", "(A / Cross)");
 
 
             if(gamepad1.x){
