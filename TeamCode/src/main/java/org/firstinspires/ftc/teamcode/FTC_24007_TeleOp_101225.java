@@ -41,6 +41,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeWheel;
 import org.firstinspires.ftc.teamcode.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.Mecanum;
@@ -75,6 +76,8 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
     private Launcher launcher;
     private Shooter shooter;
     private Mecanum mecanum;
+    private IntakeWheel intakeWheel;
+
 
     @Override
     public void runOpMode() {
@@ -84,6 +87,7 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
         launcher = new Launcher(hardwareMap, telemetry);
         shooter = new Shooter(hardwareMap, telemetry);
         mecanum = new Mecanum(hardwareMap);
+        intakeWheel = new IntakeWheel(hardwareMap);
         Mecanum.SPEED speed;
 
         boolean targetFound     = false;    // Set to true when an AprilTag target is detected
@@ -179,6 +183,8 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
                 telemetry.addData("Manual","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
                 mecanum.driveFieldRelative(drive, strafe, turn, speed);
             }
+            intakeWheel.setIntakeSpeed(gamepad1.right_trigger - gamepad1.left_trigger);
+
 
 
             if (gamepad1.psWasPressed()) {
