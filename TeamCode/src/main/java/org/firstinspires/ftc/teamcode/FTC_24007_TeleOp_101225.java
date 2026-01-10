@@ -43,6 +43,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeWheel;
 import org.firstinspires.ftc.teamcode.subsystems.Launcher;
+import org.firstinspires.ftc.teamcode.subsystems.LauncherWheel;
 import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.subsystems.Mecanum;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -73,7 +74,8 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
     final double MAX_AUTO_STRAFE= 0.5;   //  Clip the strafing speed to this max value (adjust for your robot)
     final double MAX_AUTO_TURN  = 0.3;   //  Clip the turn speed to this max value (adjust for your robot)
 
-    private Launcher launcher;
+    //private Launcher launcher;
+    private LauncherWheel launcherwheel;
     private Shooter shooter;
     private Mecanum mecanum;
     private IntakeWheel intakeWheel;
@@ -84,7 +86,8 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        launcher = new Launcher(hardwareMap, telemetry);
+       // launcher = new Launcher(hardwareMap, telemetry);
+        launcherwheel = new LauncherWheel(hardwareMap, telemetry);
         shooter = new Shooter(hardwareMap, telemetry);
         mecanum = new Mecanum(hardwareMap);
         intakeWheel = new IntakeWheel(hardwareMap);
@@ -185,8 +188,6 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
             }
             intakeWheel.setIntakeSpeed(gamepad1.right_trigger - gamepad1.left_trigger);
 
-
-
             if (gamepad1.psWasPressed()) {
                 mecanum.resetImu();
             }
@@ -207,9 +208,17 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
             if (gamepad1.dpadDownWasPressed()){
                 shooter.decreaseVelocity();
             }
+            /*
             if (gamepad1.leftStickButtonWasPressed()) {
                 launcher.shoot();
             }
+            */
+            if (gamepad1.leftStickButtonWasPressed()) {
+             launcherwheel.LauncherOn();
+            }else{
+                launcherwheel.LauncherOff();
+            }
+
             // Show the elapsed game time and wheel power.
             // telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Game Pad 1", "Left stick y:" + gamepad1.left_stick_y);

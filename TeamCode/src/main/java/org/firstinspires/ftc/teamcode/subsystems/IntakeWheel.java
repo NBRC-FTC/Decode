@@ -25,10 +25,9 @@ public class IntakeWheel {
     }
     public void IntakeSpit(){
         intakeMotor.setPower(-0.3);
-
     }
+
     public void setIntakeSpeed (float speed){
         intakeMotor.setPower(speed);
-
     }
 }
