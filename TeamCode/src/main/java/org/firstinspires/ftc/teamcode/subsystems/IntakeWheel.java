@@ -12,7 +12,7 @@ public class IntakeWheel {
     public IntakeWheel(HardwareMap hardwareMap) {
 
         this.hardwareMap = hardwareMap;
-        intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor1");
+        intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor");
         intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
     }
     public void IntakeOn(){

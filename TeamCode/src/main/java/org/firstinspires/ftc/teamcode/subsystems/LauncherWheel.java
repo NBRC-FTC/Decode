@@ -14,7 +14,7 @@ public class LauncherWheel {
     public LauncherWheel(HardwareMap hardwareMap, Telemetry telemetry) {
 
         this.hardwareMap = hardwareMap;
-        launcherMotor = hardwareMap.get(DcMotor.class, "launcher_motor1");
+        launcherMotor = hardwareMap.get(DcMotor.class, "launcher_motor");
         launcherMotor.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
