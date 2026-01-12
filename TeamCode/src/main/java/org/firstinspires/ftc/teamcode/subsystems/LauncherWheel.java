@@ -19,7 +19,7 @@ public class LauncherWheel {
     }
 
     public void LauncherOn(){
-        launcherMotor.setPower(0.7);
+        launcherMotor.setPower(1);
     }
 
     public void LauncherOff(){

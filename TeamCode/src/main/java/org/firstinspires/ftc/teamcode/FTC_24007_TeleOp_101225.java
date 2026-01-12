@@ -213,12 +213,11 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
                 launcher.shoot();
             }
             */
-            if (gamepad1.leftStickButtonWasPressed()) {
+            if (gamepad1.left_stick_button) {
              launcherwheel.LauncherOn();
             }else{
                 launcherwheel.LauncherOff();
             }
-
             // Show the elapsed game time and wheel power.
             // telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Game Pad 1", "Left stick y:" + gamepad1.left_stick_y);
