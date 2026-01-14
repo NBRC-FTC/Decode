@@ -193,14 +193,14 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
             }
             if (gamepad1.xWasPressed()) {
                 shooter.shootNear();
-                DESIRED_DISTANCE = 37;
+                DESIRED_DISTANCE = 26;
             }
-            if (gamepad1.yWasPressed()) {
+            if (gamepad1.dpadLeftWasPressed()) {
                 shooter.shooterStop();
             }
             if (gamepad1.bWasPressed()) {
                 shooter.shootMed();
-                DESIRED_DISTANCE = 65;
+                DESIRED_DISTANCE = 46;
             }
             if (gamepad1.dpadUpWasPressed()){
                 shooter.increaseVelocity();
@@ -213,10 +213,13 @@ public class FTC_24007_TeleOp_101225 extends LinearOpMode {
                 launcher.shoot();
             }
             */
-            if (gamepad1.left_stick_button) {
+
+            if (gamepad1.y && shooter.isShooterAtTargetVelocity()) {
              launcherwheel.LauncherOn();
+             intakeWheel.IntakeOn();
             }else{
                 launcherwheel.LauncherOff();
+
             }
             // Show the elapsed game time and wheel power.
             // telemetry.addData("Status", "Run Time: " + runtime.toString());

@@ -19,6 +19,13 @@ public class Shooter {
         this.telemetry = telemetry;
 
     }
+    public boolean isShooterAtTargetVelocity(){
+        if (targetShooterVelocity >= leftShooterMotor.getVelocity()-40 && targetShooterVelocity >= rightShooterMotor.getVelocity()-40 && targetShooterVelocity <= leftShooterMotor.getVelocity()+40 && targetShooterVelocity <= rightShooterMotor.getVelocity()+40){
+            return true;
+        }else{
+            return false;
+        }
+    }
     public void setShooterVelocity(double velocity){
         leftShooterMotor.setVelocity(velocity);
         rightShooterMotor.setVelocity(velocity);
@@ -30,6 +37,7 @@ public class Shooter {
     public void shooterStop (){
         leftShooterMotor.setVelocity(0);
         rightShooterMotor.setVelocity(0);
+        targetShooterVelocity = 0;
     }
     public void shootNear(){
         targetShooterVelocity = 760;

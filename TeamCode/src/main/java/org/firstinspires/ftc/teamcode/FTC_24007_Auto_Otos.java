@@ -9,13 +9,16 @@ import org.firstinspires.ftc.teamcode.subsystems.Launcher;
 //import org.firstinspires.ftc.teamcode.subsystems.Mecanum;
 import org.firstinspires.ftc.teamcode.subsystems.OtosDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.subsystems.LauncherWheel;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeWheel;
 
 
 @Autonomous(name="AutoMode_Otos",preselectTeleOp = "TeleOpMode")  // @TeleOp(...) is the other common choice
 // @Disabled
 public class FTC_24007_Auto_Otos extends LinearOpMode {
 
-
+    private  LauncherWheel launcherWheel;
+    private  IntakeWheel intakeWheel;
     private Launcher launcher;
     private Shooter shooter;
     //private Mecanum mecanum;
@@ -34,7 +37,8 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
         telemetry.setAutoClear(true);
         OtosDrive otosDrive = new OtosDrive(hardwareMap, telemetry);
         otosDrive.configureOtos();
-
+        launcherWheel = new LauncherWheel(hardwareMap, telemetry);
+        intakeWheel = new IntakeWheel(hardwareMap);
         launcher = new Launcher(hardwareMap, telemetry);
         shooter = new Shooter(hardwareMap, telemetry);
         //mecanum = new Mecanum(hardwareMap);
@@ -90,35 +94,47 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
                 telemetry.update();
                 sleep(delay);
+                shooter.shootNear();
                 otosDrive.driveOtos(0, -22, 0, 10);
                 telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
                 telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
                 telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
                 telemetry.update();
                 sleep(500);
-                shooter.shootNear();
-                sleep(2000);
-                launcher.shooterUp();
-                sleep(1000);
-                launcher.shooterDown();
-                sleep(500);
-                shooter.shootNear();
-                sleep(2000);
-                launcher.shooterUp();
-                sleep(1000);
-                launcher.shooterDown();
-                sleep(500);
-                shooter.shootNear();
-                sleep(2000);
-                launcher.shooterUp();
-                sleep(1000);
-                launcher.shooterDown();
-                sleep(500);
-                shooter.shootNear();
-                sleep(2000);
-                launcher.shooterUp();
-                sleep(1000);
-                otosDrive.driveOtos(-26, -22, 0, 10);
+
+//                sleep(2000);
+//                launcher.shooterUp();
+//                sleep(1000);
+//                launcher.shooterDown();
+//                sleep(500);
+//                shooter.shootNear();
+//                sleep(2000);
+//                launcher.shooterUp();
+//                sleep(1000);
+//                launcher.shooterDown();
+//                sleep(500);
+//                shooter.shootNear();
+//                sleep(2000);
+//                launcher.shooterUp();
+//                sleep(1000);
+//                launcher.shooterDown();
+//                sleep(500);
+//                shooter.shootNear();
+//                sleep(2000);
+//                launcher.shooterUp();
+//                sleep(1000);
+                launcherWheel.LauncherOn();
+                intakeWheel.IntakeOn();
+                sleep(5000);
+                launcherWheel.LauncherOff();
+                intakeWheel.IntakeSpit();
+                sleep(200);
+                launcherWheel.LauncherOn();
+                intakeWheel.IntakeOn();
+                sleep(5000);
+                intakeWheel.IntakeOff();
+                launcherWheel.LauncherOff();
+                otosDrive.driveOtos(-15, -22, 0, 10);
                 break;
 
             case SMALL_PARK:
